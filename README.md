@@ -266,3 +266,30 @@ make db-restore file=backups/my-shop-2025....sql.gz
 ## Generated files
 
 `docker-compose.yml`, `Makefile`, `setup.sh`, `.env.example`, `.gitignore`, `README.md`, `docker/php/{Dockerfile,php.ini,conf.d/xdebug.ini}`, `docker/nginx/default.conf`, `src/.gitkeep`.
+
+# Creating a New Project from the Template
+
+```bash
+git clone <repository-URL> my-new-project
+cd my-new-project
+rm -rf .git && git init     # Start with a clean Git history for the new project
+./setup.sh
+```
+
+The folder name (`my-new-project`) is automatically used as the `PROJECT_NAME`, ensuring that each project has its own containers, network, and database.
+
+If the repository is hosted on GitHub, you can alternatively mark it as a **Template repository** (Settings → Template repository). The **Use this template** button will then automatically create a new repository without carrying over the template's Git history.
+
+### Running Multiple Projects at the Same Time
+
+All projects use the same default ports (8080, 3307, 8025, etc.). If `task-list` is still running, stop it with:
+
+```bash
+make down
+```
+
+before starting the next project.
+
+Alternatively, you can change the port mappings in the new project's `.env` file to avoid conflicts.
+
+The `setup.sh` script will also warn you if any of the required ports are already in use.
